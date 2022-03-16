@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Reactive Programing in Angular with RxJS · Angular Intermediate Training</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Check the [documentation](https://rxjs-dev.firebaseapp.com/) forRxJS."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Reactive Programing in Angular with RxJS · Angular Intermediate Training"/><meta property="og:type" content="website"/><meta property="og:url" content="https://alexandruminzatanu.github.io/angular-ws//angular-ws/"/><meta property="og:description" content="Check the [documentation](https://rxjs-dev.firebaseapp.com/) forRxJS."/><meta property="og:image" content="https://alexandruminzatanu.github.io/angular-ws//angular-ws/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://alexandruminzatanu.github.io/angular-ws//angular-ws/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/angular-ws/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/angular-ws/js/scrollSpy.js"></script><link rel="stylesheet" href="/angular-ws/css/main.css"/><script src="/angular-ws/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/angular-ws/"><img class="logo" src="/angular-ws/img/favicon.ico" alt="Angular Intermediate Training"/><h2 class="headerTitleWithLogo">Angular Intermediate Training</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/angular-ws/docs/doc1" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>🧑🏻 Observables, Subjects, Reactive Programing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc1">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Setup &amp; File Structure</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc2">How to create a project structure</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧔🏻 Modules, Components &amp; Databinding</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc3">Components data flow</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧔🏻 Structural Directives</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc6">*ngFor *ngIf ...</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Angular Router</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc8">Angular Routing Module</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧔🏻 Template Syntax</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc4">ngModel, ngModelChange</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧔🏻 Angular Forms</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc9">Template-driven forms</a></li><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc10">Reactive form</a></li><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc11">Validators</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Making Http Requests</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc5">HttpClient, Observables</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Using Services &amp; Dependency Injection</h3><ul class=""><li class="navListItem"><a class="navItem" href="/angular-ws/docs/doc7">Angular Services</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">🧑🏻 Observables, Subjects, Reactive Programing</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/angular-ws/docs/doc14">Why RxJS in Angular?</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Reactive Programing in Angular with RxJS</h1></header><article><div><span><p>Check the <a href="https://rxjs-dev.firebaseapp.com/">documentation</a> forRxJS.</p>
+<h2><a class="anchor" aria-hidden="true" id="docs"></a><a href="#docs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Docs</h2>
+<p>RxJS is a library for composing asynchronous and event-based programs by using observable sequences. It provides one core type, the Observable, satellite types (Observer, Schedulers, Subjects) and operators inspired by Array#extras (map, filter, reduce, every, etc) to allow handling asynchronous events as collections.</p>
+<h2><a class="anchor" aria-hidden="true" id="reactive-programing"></a><a href="#reactive-programing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reactive Programing</h2>
+<pre><code class="hljs"><span class="hljs-comment">// concert spectators</span>
+<span class="hljs-keyword">let</span> inMainStand = <span class="hljs-number">300</span>;
+<span class="hljs-keyword">let</span> inVipStand = <span class="hljs-number">50</span>;
+
+<span class="hljs-comment">// code...</span>
+
+<span class="hljs-keyword">let</span> total = inMainStand + inVipStand; <span class="hljs-comment">// 350</span>
+
+<span class="hljs-comment">// code...</span>
+
+inMainStand += <span class="hljs-number">60</span>;
+
+<span class="hljs-built_in">console</span>.log(total); <span class="hljs-comment">// total = ?</span>
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="now-you-need-to-recalculate-the-total"></a><a href="#now-you-need-to-recalculate-the-total" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Now you need to recalculate the total</h3>
+<table>
+<thead>
+<tr><th>Proactive</th><th style="text-align:center">Pasive</th></tr>
+</thead>
+<tbody>
+<tr><td>Cart --&gt;</td><td style="text-align:center">Invoice</td></tr>
+</tbody>
+</table>
+<pre><code class="hljs">
+<span class="hljs-keyword">import</span> {Invoice} <span class="hljs-keyword">from</span> <span class="hljs-string">'./invoice'</span>;
+
+<span class="hljs-keyword">class</span> Cart {
+    
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">invoice: Invoice</span>){ ... }
+    
+    addProduct(product) {
+        ...
+        <span class="hljs-keyword">this</span>.invoice.update(product); <span class="hljs-comment">// needs to be public</span>
+        ...
+    }
+}
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="reactive-way"></a><a href="#reactive-way" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reactive way</h3>
+<table>
+<thead>
+<tr><th>Listenable</th><th style="text-align:center">Reactiv</th></tr>
+</thead>
+<tbody>
+<tr><td>Cart</td><td style="text-align:center">---&gt; Invoice</td></tr>
+</tbody>
+</table>
+<pre><code class="hljs">
+<span class="hljs-keyword">import</span> {Cart} from <span class="hljs-string">'./cart'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Invoice</span> </span>{
+    
+    <span class="hljs-keyword">constructor</span>(cart: Cart){ ... }
+    
+    <span class="hljs-keyword">init</span>() {
+        ...
+        <span class="hljs-keyword">this</span>.cart.onCartChange( callback )
+
+    }
+}    
+
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="why-reactive-programming"></a><a href="#why-reactive-programming" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why reactive programming</h2>
+<p>Interruptions in web applications</p>
+<ul>
+<li>API events</li>
+<li>WebSockets</li>
+<li>User-triggered events</li>
+<li>Timers (setTimeout, setInterval)</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="observer-pattern"></a><a href="#observer-pattern" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Observer pattern</h2>
+<p><img src="https://www.dofactory.com/images/diagrams/javascript/javascript-observer.jpg" alt="alt text" title="Observer pattern"></p>
+<h2><a class="anchor" aria-hidden="true" id="managing-side-effects"></a><a href="#managing-side-effects" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Managing side-effects</h2>
+<table>
+<thead>
+<tr><th></th><th style="text-align:center">SYNC</th><th style="text-align:center">ASYNC</th></tr>
+</thead>
+<tbody>
+<tr><td>SINGLE</td><td style="text-align:center">function</td><td style="text-align:center">promises</td></tr>
+<tr><td>MULTIPLE</td><td style="text-align:center">generators</td><td style="text-align:center">observables</td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="observables"></a><a href="#observables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Observables</h2>
+<ul>
+<li>A stream of data ( 0 or more values of any type)</li>
+<li>Pushed over any amount of time (can end, but not necessarily)</li>
+<li>Cancelable ( can be stopped from emitting a value - unsubscribed)</li>
+<li>Lazy - won't emit values until we subscribe to them</li>
+<li>Just a function that takes an observer and returns a function</li>
+</ul>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5973188/stream.gif" alt="alt text" title="Observer pattern"></p>
+<h3><a class="anchor" aria-hidden="true" id="dealing-with-async-in-our-app"></a><a href="#dealing-with-async-in-our-app" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dealing with async in our app</h3>
+<ul>
+<li>Dom events</li>
+<li>Animations</li>
+<li>AJAX</li>
+<li>WebSockets</li>
+<li>Server Events</li>
+</ul>
+<h4><a class="anchor" aria-hidden="true" id="ajax-with-callbacks"></a><a href="#ajax-with-callbacks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ajax with callbacks</h4>
+<pre><code class="hljs">
+getData(
+  <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(successResult)</span> </span>{
+    <span class="hljs-comment">// do something with the data</span>
+  },
+  <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(faliureError)</span> </span>{
+    <span class="hljs-comment">// handle the error</span>
+  },
+);
+
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="ajax-with-promises"></a><a href="#ajax-with-promises" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ajax with promises</h4>
+<pre><code class="hljs">
+<span class="hljs-keyword">let</span> result = http.get(<span class="hljs-string">'api/users.json'</span>);
+
+result.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">success</span>) </span>{
+    <span class="hljs-comment">// handle success</span>
+  },
+  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+    <span class="hljs-comment">// handle error</span>
+  }
+)
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="creating-an-observable"></a><a href="#creating-an-observable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating an observable</h2>
+<pre><code class="hljs">let observable$ = <span class="hljs-keyword">new</span> Observable(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+ 
+})
+</code></pre>
+<ul>
+<li>read-only - consumer</li>
+<li>plain function</li>
+<li>exposes 3 channels: next, error and complete</li>
+</ul>
+<h1><a class="anchor" aria-hidden="true" id="exercise-file-httpsstackblitzcomeditam-rxjs-1"></a><a href="#exercise-file-httpsstackblitzcomeditam-rxjs-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exercise file: <a href="https://stackblitz.com/edit/am-rxjs-1">https://stackblitz.com/edit/am-rxjs-1</a></h1>
+<h1><a class="anchor" aria-hidden="true" id="creating-an-observable-1"></a><a href="#creating-an-observable-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating an Observable</h1>
+<h2><a class="anchor" aria-hidden="true" id="creation-functions"></a><a href="#creation-functions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creation functions</h2>
+<ul>
+<li>of(value1, value2, value3)</li>
+<li>from(promise/itterable/observable)</li>
+<li>fromEvent(target, eventName)</li>
+<li>interval(time)</li>
+<li>timer(time)</li>
+</ul>
+<h1><a class="anchor" aria-hidden="true" id="operators"></a><a href="#operators" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Operators</h1>
+<h2><a class="anchor" aria-hidden="true" id="observables-are-collections-of-pushed-values-or-events-that-we-can"></a><a href="#observables-are-collections-of-pushed-values-or-events-that-we-can" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Observables are collections of pushed values or events that we can:</h2>
+<ul>
+<li>query (filter)</li>
+<li>transform (map)</li>
+<li>accumulate (reduce)</li>
+<li>join</li>
+<li>flatten</li>
+<li>more...</li>
+</ul>
+<pre><code class="hljs"><span class="hljs-keyword">let</span> observable$ = <span class="hljs-keyword">from</span>([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]);
+
+observable$
+  .pipe(
+    map(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v * v),
+    filter(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v &gt; <span class="hljs-number">5</span> &amp;&amp; v &lt; <span class="hljs-number">20</span>),
+    reduce(<span class="hljs-function">(<span class="hljs-params">acc, curr</span>) =&gt;</span> acc + curr, <span class="hljs-number">0</span>)
+  )
+  .subscribe(<span class="hljs-function"><span class="hljs-params">val</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(val))
+
+<span class="hljs-comment">// 25</span>
+</code></pre>
+<h1><a class="anchor" aria-hidden="true" id="exercise-file-httpsstackblitzcomeditam-rxjs-2"></a><a href="#exercise-file-httpsstackblitzcomeditam-rxjs-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exercise file: <a href="https://stackblitz.com/edit/am-rxjs-2">https://stackblitz.com/edit/am-rxjs-2</a></h1>
+<h2><a class="anchor" aria-hidden="true" id="map"></a><a href="#map" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MAP</h2>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5977725/Screenshot_2019-04-03_at_15.23.58.png" alt="alt text" title="map"></p>
+<h2><a class="anchor" aria-hidden="true" id="filter"></a><a href="#filter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FILTER</h2>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5977727/Screenshot_2019-04-03_at_15.25.14.png" alt="alt text" title="filter"></p>
+<h2><a class="anchor" aria-hidden="true" id="scan"></a><a href="#scan" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SCAN</h2>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5977728/Screenshot_2019-04-03_at_15.26.05.png" alt="alt text" title="scan"></p>
+<h2><a class="anchor" aria-hidden="true" id="reduce"></a><a href="#reduce" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>REDUCE</h2>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5977793/Screenshot_2019-04-03_at_15.39.44.png" alt="alt text" title="reduce"></p>
+<h2><a class="anchor" aria-hidden="true" id="tap"></a><a href="#tap" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TAP</h2>
+<p><img src="https://s3.amazonaws.com/media-p.slid.es/uploads/248920/images/5979084/Screenshot_2019-04-03_at_20.07.43.png" alt="alt text" title="tap"></p>
+<h1><a class="anchor" aria-hidden="true" id="exercise"></a><a href="#exercise" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exercise:</h1>
+<p>Now that we know how to create an observable, and we know some operators, let's use form events, subscribe to them
+and make a request for a chuck noris joke when one of this category is typed in your form (<a href="https://api.chucknorris.io/jokes/categories">https://api.chucknorris.io/jokes/categories</a>).
+(<a href="https://api.chucknorris.io/jokes/random?category={category}">https://api.chucknorris.io/jokes/random?category={category}</a>)</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/angular-ws/docs/doc7"><span class="arrow-prev">← </span><span>Angular Services</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#docs">Docs</a></li><li><a href="#reactive-programing">Reactive Programing</a><ul class="toc-headings"><li><a href="#now-you-need-to-recalculate-the-total">Now you need to recalculate the total</a></li><li><a href="#reactive-way">Reactive way</a></li></ul></li><li><a href="#why-reactive-programming">Why reactive programming</a></li><li><a href="#observer-pattern">Observer pattern</a></li><li><a href="#managing-side-effects">Managing side-effects</a></li><li><a href="#observables">Observables</a><ul class="toc-headings"><li><a href="#dealing-with-async-in-our-app">Dealing with async in our app</a></li></ul></li><li><a href="#creating-an-observable">Creating an observable</a></li><li><a href="#creation-functions">Creation functions</a></li><li><a href="#observables-are-collections-of-pushed-values-or-events-that-we-can">Observables are collections of pushed values or events that we can:</a></li><li><a href="#map">MAP</a></li><li><a href="#filter">FILTER</a></li><li><a href="#scan">SCAN</a></li><li><a href="#reduce">REDUCE</a></li><li><a href="#tap">TAP</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://angular.io" class="nav-home"><img src="/angular-ws/img/favicon.ico" alt="Angular Intermediate Training" width="66" height="58"/></a><div><h5>Docs</h5><a href="/angular-ws/docs/doc1.html">Documentation</a><a href="https://wiki.no.centric.lan/display/SoC/Angular+intermediate">Wiki Page</a><a href="https://centric.eu">centric.eu</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/angular-ws/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2022</section></footer></div></body></html>
